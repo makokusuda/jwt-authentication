@@ -1,8 +1,8 @@
 const db = require("./config");
 const { DataTypes } = require("sequelize");
 
-const RefreshToken = db.define("refreshToken", {
-  token: {
+const RefreshToken = db.define("refresh_token", {
+  refreshToken: {
     type: DataTypes.STRING,
   },
   expirationDate: {
