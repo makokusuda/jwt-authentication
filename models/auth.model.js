@@ -1,7 +1,7 @@
-const config = require("./config");
+const db = require("./config");
 const { DataTypes } = require("sequelize");
 
-const RefreshToken = config("refresh_token").define("RefreshToken", {
+const RefreshToken = db.define("refreshToken", {
   token: {
     type: DataTypes.STRING,
   },
