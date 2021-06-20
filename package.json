@@ -6,7 +6,8 @@
   "scripts": {
     "server": "nodemon ./server/server.js",
     "create": "node models/createTable.js",
-    "seed": "node models/seed.js"
+    "seed": "node models/seed.js",
+    "start": "webpack serve --mode=development --open --hot"
   },
   "author": "",
   "license": "ISC",
@@ -17,9 +18,20 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.6.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
     "sequelize": "^6.6.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "@babel/preset-react": "^7.14.5",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.6",
+    "html-webpack-plugin": "^5.3.1",
+    "nodemon": "^2.0.7",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.39.1",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
   }
 }
