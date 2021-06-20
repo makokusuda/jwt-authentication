@@ -12,6 +12,7 @@ app.use(express.json());
 app.get("/api/users", helpers.authenticateToken, controller.getAllUsers);
 app.post("/api/auth/sign-up", controller.createUser);
 app.post("/api/auth/sign-in", controller.signIn);
+app.post("/api/auth/refresh-token", controller.refreshToken);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

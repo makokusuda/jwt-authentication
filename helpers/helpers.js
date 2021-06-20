@@ -21,19 +21,26 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-const generateAccessToken = (userName) => {
-  return jwt.sign({ userName }, process.env.TOKEN_SECRET, {
+const generateAccessToken = (userId) => {
+  return jwt.sign({ userId }, process.env.TOKEN_SECRET, {
     expiresIn: `${authConfig.jwtExpiration}s`,
   });
 };
 
-const generateRefreshToken = async () => {
+const generateRefreshToken = async (userId) => {
   try {
+    await RefreshToken.destroy({
+      where: {
+        userId,
+      },
+    });
+
     const token = await RefreshToken.create({
       refreshToken: randomTokenString(),
       expirationDate: new Date(
         Date.now() + authConfig.jwtRefreshExpiration * 1000
       ),
+      userId,
     });
     return token.refreshToken;
   } catch (err) {
@@ -45,8 +52,13 @@ const randomTokenString = () => {
   return crypto.randomBytes(40).toString("hex");
 };
 
+const verifyExpiration = (token) => {
+  return token.expirationDate.getTime() < new Date().getTime();
+};
+
 module.exports = {
   authenticateToken,
   generateAccessToken,
   generateRefreshToken,
+  verifyExpiration,
 };
