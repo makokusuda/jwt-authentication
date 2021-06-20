@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/api/users", helpers.authenticateToken, controller.getAllUsers);
+app.get("/api/articles", helpers.authenticateToken, controller.getAllArticles);
 app.post("/api/auth/sign-up", controller.createUser);
 app.post("/api/auth/sign-in", controller.signIn);
 app.post("/api/auth/refresh-token", controller.refreshToken);
