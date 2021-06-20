@@ -1,11 +1,20 @@
 const bcrypt = require("bcryptjs");
 
 const helpers = require("../helpers/helpers");
-const { User, RefreshToken } = require("../models/index");
+const { Article, User, RefreshToken } = require("../models/index");
 
 const getAllUsers = async (req, res) => {
   try {
     const result = await User.findAll();
+    return res.status(200).send(result);
+  } catch (err) {
+    return res.status(404).send({ message: err });
+  }
+};
+
+const getAllArticles = async (req, res) => {
+  try {
+    const result = await Article.findAll();
     return res.status(200).send(result);
   } catch (err) {
     return res.status(404).send({ message: err });
@@ -95,4 +104,10 @@ const refreshToken = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, createUser, signIn, refreshToken };
+module.exports = {
+  getAllArticles,
+  getAllUsers,
+  createUser,
+  signIn,
+  refreshToken,
+};
