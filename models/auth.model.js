@@ -8,6 +8,9 @@ const RefreshToken = db.define("refresh_token", {
   expirationDate: {
     type: DataTypes.DATE,
   },
+  userId: {
+    type: DataTypes.INTEGER,
+  },
 });
 
 module.exports = { RefreshToken };

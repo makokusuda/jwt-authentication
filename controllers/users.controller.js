@@ -49,9 +49,9 @@ const signIn = async (req, res) => {
         message: "Invalid Password!",
       });
     } else {
-      const accessToken = helpers.generateAccessToken(userName);
-      const refreshToken = await helpers.generateRefreshToken();
-      return res.status(200).send({
+      const accessToken = helpers.generateAccessToken(user[0].id);
+      const refreshToken = await helpers.generateRefreshToken(user[0].id);
+      return res.status(201).send({
         accessToken,
         refreshToken,
       });
@@ -61,4 +61,38 @@ const signIn = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, createUser, signIn };
+const refreshToken = async (req, res) => {
+  const { refreshToken } = req.body;
+  if (refreshToken === null) {
+    return res.status(400).json({ message: "Refresh Token is required!" });
+  }
+
+  try {
+    const token = await RefreshToken.findAll({
+      where: {
+        refreshToken,
+      },
+    });
+
+    if (token.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Refresh token is not in database!" });
+    }
+    if (helpers.verifyExpiration(token[0])) {
+      return res.status(400).json({
+        message: "Refresh token was expired. Please make a new sign in request",
+      });
+    }
+
+    const accessToken = helpers.generateAccessToken(token[0].userId);
+    return res.status(201).send({
+      accessToken,
+      refreshToken: token[0].refreshToken,
+    });
+  } catch (err) {
+    return res.status(404).send({ message: err });
+  }
+};
+
+module.exports = { getAllUsers, createUser, signIn, refreshToken };
