@@ -2,7 +2,6 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
 const authConfig = require("../config/auth.config");
-const { RefreshToken } = require("../models/auth.model");
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -27,25 +26,13 @@ const generateAccessToken = (userId) => {
   });
 };
 
-const generateRefreshToken = async (userId) => {
-  try {
-    await RefreshToken.destroy({
-      where: {
-        userId,
-      },
-    });
-
-    const token = await RefreshToken.create({
-      refreshToken: randomTokenString(),
-      expirationDate: new Date(
-        Date.now() + authConfig.jwtRefreshExpiration * 1000
-      ),
-      userId,
-    });
-    return token.refreshToken;
-  } catch (err) {
-    return err;
-  }
+const generateRefreshToken = () => {
+  return {
+    refreshToken: randomTokenString(),
+    expirationDate: new Date(
+      Date.now() + authConfig.jwtRefreshExpiration * 1000
+    ),
+  };
 };
 
 const randomTokenString = () => {

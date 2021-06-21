@@ -8,6 +8,9 @@ const Article = db.define("article", {
   body: {
     type: DataTypes.STRING,
   },
+  userId: {
+    type: DataTypes.INTEGER,
+  },
 });
 
 module.exports = { Article };

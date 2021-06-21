@@ -59,10 +59,23 @@ const signIn = async (req, res) => {
       });
     } else {
       const accessToken = helpers.generateAccessToken(user[0].id);
-      const refreshToken = await helpers.generateRefreshToken(user[0].id);
+      const refreshToken = await helpers.generateRefreshToken();
+      await RefreshToken.destroy({
+        where: {
+          userId: user[0].id,
+        },
+      });
+      // Save access token and refresh token in DB
+      await RefreshToken.create({
+        refreshToken: refreshToken.refreshToken,
+        expirationDate: refreshToken.expirationDate,
+        userId: user[0].id,
+        accessToken,
+      });
+
       return res.status(201).send({
         accessToken,
-        refreshToken,
+        refreshToken: refreshToken.refreshToken,
       });
     }
   } catch (err) {
@@ -71,11 +84,10 @@ const signIn = async (req, res) => {
 };
 
 const refreshToken = async (req, res) => {
-  const { refreshToken } = req.body;
-  if (refreshToken === null) {
+  const { refreshToken, accessToken } = req.body;
+  if (refreshToken === null || accessToken === null) {
     return res.status(400).json({ message: "Refresh Token is required!" });
   }
-
   try {
     const token = await RefreshToken.findAll({
       where: {
@@ -88,15 +100,28 @@ const refreshToken = async (req, res) => {
         .status(404)
         .json({ message: "Refresh token is not in database!" });
     }
+    if (accessToken !== token[0].accessToken) {
+      return res.status(404).json({ message: "Access token is wrong!" });
+    }
     if (helpers.verifyExpiration(token[0])) {
       return res.status(400).json({
         message: "Refresh token was expired. Please make a new sign in request",
       });
     }
 
-    const accessToken = helpers.generateAccessToken(token[0].userId);
+    const newAccessToken = helpers.generateAccessToken(token[0].userId);
+    // Save new access token in DB
+    await RefreshToken.update(
+      { accessToken: newAccessToken },
+      {
+        where: {
+          refreshToken,
+        },
+      }
+    );
+
     return res.status(201).send({
-      accessToken,
+      accessToken: newAccessToken,
       refreshToken: token[0].refreshToken,
     });
   } catch (err) {
