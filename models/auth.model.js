@@ -11,6 +11,9 @@ const RefreshToken = db.define("refresh_token", {
   userId: {
     type: DataTypes.INTEGER,
   },
+  accessToken: {
+    type: DataTypes.STRING,
+  },
 });
 
 module.exports = { RefreshToken };
