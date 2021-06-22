@@ -1,6 +1,6 @@
+const bcrypt = require("bcryptjs");
 const db = require("./config");
 const { DataTypes } = require("sequelize");
-const bcrypt = require("bcryptjs");
 
 const helpers = require("../helpers/helpers");
 
@@ -91,7 +91,8 @@ const createUser = async (req, res) => {
 const getAllArticles = async (req, res) => {
   try {
     const result = await Article.findAll({
-      include: User,
+      include: [{ model: User, attributes: ["userName"] }],
+      attributes: ["body", "createdAt", "id", "title", "updatedAt"],
     });
     return res.status(200).send(result);
   } catch (err) {
