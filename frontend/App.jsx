@@ -1,10 +1,10 @@
 import React from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import About from "./common/About";
-import Home from "./home/Home";
-import Login from "./login/Login";
-import Menu from "./common/Menu";
-import MyPage from "./myPage/MyPage";
+import About from "@/frontend/common/About";
+import Home from "@/frontend/home/Home";
+import Login from "@/frontend/login/Login";
+import Menu from "@/frontend/common/Menu";
+import MyPage from "@/frontend/myPage/MyPage";
 
 const App = () => {
   return (

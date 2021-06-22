@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import service from "../../service/service";
+import service from "@/service/service";
 
 const Home = () => {
   const [articles, setArticles] = useState([]);
