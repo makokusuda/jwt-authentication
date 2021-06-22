@@ -6,12 +6,12 @@
   "scripts": {
     "server": "nodemon ./server/server.js",
     "create": "node models/createTable.js",
-    "seed": "node models/seed.js",
     "start": "webpack serve --mode=development --open --hot"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
