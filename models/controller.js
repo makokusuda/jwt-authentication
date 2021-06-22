@@ -1,20 +1,73 @@
 const bcrypt = require("bcryptjs");
+const db = require("./config");
+const { DataTypes } = require("sequelize");
 
 const helpers = require("../helpers/helpers");
-const { Article, User, RefreshToken } = require("../models/index");
 
+const Article = db.define("article", {
+  title: {
+    type: DataTypes.STRING,
+  },
+  body: {
+    type: DataTypes.STRING,
+  },
+});
+
+const RefreshToken = db.define("refresh_token", {
+  refreshToken: {
+    type: DataTypes.STRING,
+  },
+  expirationDate: {
+    type: DataTypes.DATE,
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+  },
+  accessToken: {
+    type: DataTypes.STRING,
+  },
+});
+
+const User = db.define("user", {
+  userName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
+
+User.hasMany(Article);
+Article.belongsTo(User);
+
+User.hasOne(RefreshToken);
+RefreshToken.belongsTo(User);
+
+const createTable = async () => {
+  await User.sync({ force: true });
+  await RefreshToken.sync({ force: true });
+  await Article.sync({ force: true });
+
+  await User.create({ userName: "user1", password: "1234" });
+  await Article.create({
+    title: "test title1",
+    body: "test body1",
+    userId: 1,
+  });
+  await Article.create({
+    title: "test title2",
+    body: "test body2",
+    userId: 1,
+  });
+};
+
+// Users
 const getAllUsers = async (req, res) => {
   try {
     const result = await User.findAll();
-    return res.status(200).send(result);
-  } catch (err) {
-    return res.status(404).send({ message: err });
-  }
-};
-
-const getAllArticles = async (req, res) => {
-  try {
-    const result = await Article.findAll();
     return res.status(200).send(result);
   } catch (err) {
     return res.status(404).send({ message: err });
@@ -34,6 +87,20 @@ const createUser = async (req, res) => {
   }
 };
 
+// Articles
+const getAllArticles = async (req, res) => {
+  try {
+    const result = await Article.findAll({
+      include: [{ model: User, attributes: ["userName"] }],
+      attributes: ["body", "createdAt", "id", "title", "updatedAt"],
+    });
+    return res.status(200).send(result);
+  } catch (err) {
+    return res.status(404).send({ message: err });
+  }
+};
+
+// Refresh tokens
 const signIn = async (req, res) => {
   const { userName, password } = req.body;
   try {
@@ -130,9 +197,10 @@ const refreshToken = async (req, res) => {
 };
 
 module.exports = {
+  createTable,
+  createUser,
   getAllArticles,
   getAllUsers,
-  createUser,
   signIn,
   refreshToken,
 };
