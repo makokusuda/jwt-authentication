@@ -11,6 +11,7 @@ app.use(express.json());
 
 app.get("/api/users", helpers.authenticateToken, controller.getAllUsers);
 app.get("/api/articles", controller.getAllArticles);
+app.post("/api/articles", helpers.authenticateToken, controller.postArticle);
 app.post("/api/auth/sign-up", controller.createUser);
 app.post("/api/auth/sign-in", controller.signIn);
 app.post("/api/auth/refresh-token", controller.refreshToken);

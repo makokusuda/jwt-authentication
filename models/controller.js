@@ -100,6 +100,16 @@ const getAllArticles = async (req, res) => {
   }
 };
 
+const postArticle = async (req, res) => {
+  const { title, body, userId } = req.body;
+  try {
+    await Article.create({ title, body, userId });
+    return res.status(201).send({ message: "Article was added successfully!" });
+  } catch (err) {
+    return res.status(400).send({ message: err });
+  }
+};
+
 // Refresh tokens
 const signIn = async (req, res) => {
   const { userName, password } = req.body;
@@ -141,6 +151,7 @@ const signIn = async (req, res) => {
       });
 
       return res.status(201).send({
+        userId: user[0].id,
         accessToken,
         refreshToken: refreshToken.refreshToken,
       });
@@ -188,6 +199,7 @@ const refreshToken = async (req, res) => {
     );
 
     return res.status(201).send({
+      userId: token[0].userId,
       accessToken: newAccessToken,
       refreshToken: token[0].refreshToken,
     });
@@ -201,6 +213,7 @@ module.exports = {
   createUser,
   getAllArticles,
   getAllUsers,
+  postArticle,
   signIn,
   refreshToken,
 };
