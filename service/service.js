@@ -10,8 +10,20 @@ const authHeader = () => {
   }
 };
 
+const deleteArticlesId = (id) => {
+  return axios.delete(`/api/articles/${id}`, { headers: authHeader() });
+};
+
+const getAllArticleByArticleId = (id) => {
+  return axios.get(`/api/articles/${id}`, { headers: authHeader() });
+};
+
 const getAllArticles = () => {
   return axios.get("/api/articles");
+};
+
+const getAllArticlesByUserId = (userId) => {
+  return axios.get(`/api/users/${userId}/articles`, { headers: authHeader() });
 };
 
 const logout = () => {
@@ -27,6 +39,22 @@ const postArticle = async (items) => {
     { title, body, userId },
     { headers: authHeader() }
   );
+};
+
+const putArticle = async (items) => {
+  const { id, body, title } = items;
+  try {
+    await axios.put(
+      `/api/articles/${id}`,
+      {
+        body,
+        title,
+      },
+      { headers: authHeader() }
+    );
+  } catch (err) {
+    throw new Error(err);
+  }
 };
 
 const refreshToken = async (items) => {
@@ -64,9 +92,13 @@ const signIn = async (userName, password) => {
 };
 
 export default {
+  deleteArticlesId,
+  getAllArticleByArticleId,
   getAllArticles,
+  getAllArticlesByUserId,
   logout,
   postArticle,
+  putArticle,
   refreshToken,
   signIn,
 };

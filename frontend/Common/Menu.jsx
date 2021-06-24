@@ -17,7 +17,9 @@ const Menu = (props) => {
         <>
           <Link to="/my-page">My page</Link>
           <Link to="/post">Post</Link>
-          <div onClick={logout}>Logout</div>
+          <div style={{ width: "100px" }} onClick={logout}>
+            Logout
+          </div>
         </>
       ) : (
         <>

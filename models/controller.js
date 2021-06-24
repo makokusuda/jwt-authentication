@@ -88,11 +88,55 @@ const createUser = async (req, res) => {
 };
 
 // Articles
+const deleteArticle = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Article.destroy({
+      where: {
+        id,
+      },
+    });
+    return res
+      .status(200)
+      .send({ message: "Article was deleted successfully!" });
+  } catch (err) {
+    return res.status(404).send({ message: err });
+  }
+};
+
+const getAllArticleByArticleId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await Article.findAll({
+      where: {
+        id,
+      },
+    });
+    return res.status(200).send(result);
+  } catch (err) {
+    return res.status(404).send({ message: err });
+  }
+};
+
 const getAllArticles = async (req, res) => {
   try {
     const result = await Article.findAll({
       include: [{ model: User, attributes: ["userName"] }],
       attributes: ["body", "createdAt", "id", "title", "updatedAt"],
+    });
+    return res.status(200).send(result);
+  } catch (err) {
+    return res.status(404).send({ message: err });
+  }
+};
+
+const getAllArticlesByUserId = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const result = await Article.findAll({
+      where: {
+        userId,
+      },
     });
     return res.status(200).send(result);
   } catch (err) {
@@ -107,6 +151,26 @@ const postArticle = async (req, res) => {
     return res.status(201).send({ message: "Article was added successfully!" });
   } catch (err) {
     return res.status(400).send({ message: err });
+  }
+};
+
+const putArticle = async (req, res) => {
+  const { id } = req.params;
+  const { title, body } = req.body;
+  try {
+    await Article.update(
+      { title, body },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    return res
+      .status(201)
+      .send({ message: "Article was updated successfully!" });
+  } catch (err) {
+    return res.status(404).send({ message: err });
   }
 };
 
@@ -211,9 +275,13 @@ const refreshToken = async (req, res) => {
 module.exports = {
   createTable,
   createUser,
+  deleteArticle,
+  getAllArticleByArticleId,
   getAllArticles,
+  getAllArticlesByUserId,
   getAllUsers,
   postArticle,
+  putArticle,
   signIn,
   refreshToken,
 };

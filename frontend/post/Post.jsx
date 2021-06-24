@@ -19,13 +19,11 @@ const Post = (props) => {
       console.error(err);
     }
     if (postRes) return;
-
     // update access token
     try {
       console.log("Refresh token");
       const res = await service.refreshToken({ refreshToken, accessToken });
       await service.postArticle({ title, body, userId });
-      console.log(res);
     } catch (err) {
       console.log("Logout");
       service.logout();

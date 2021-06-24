@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import About from "@/frontend/common/About";
+import Edit from "@/frontend/edit/edit";
 import Home from "@/frontend/home/Home";
 import Login from "@/frontend/login/Login";
 import Menu from "@/frontend/common/Menu";
@@ -19,6 +20,16 @@ const App = () => {
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
           <Route
+            path="/edit/:id"
+            render={(props) => (
+              <Edit
+                {...props}
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+              />
+            )}
+          />
+          <Route
             path="/login"
             render={(props) => (
               <Login
@@ -28,7 +39,16 @@ const App = () => {
               />
             )}
           />
-          <Route path="/my-page" component={MyPage} />
+          <Route
+            path="/my-page"
+            render={(props) => (
+              <MyPage
+                {...props}
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+              />
+            )}
+          />
           <Route
             path="/post"
             render={(props) => (
