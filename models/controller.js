@@ -119,12 +119,17 @@ const getAllArticleByArticleId = async (req, res) => {
 };
 
 const getAllArticles = async (req, res) => {
+  const { limit, offset } = req.query;
   try {
-    const result = await Article.findAll({
+    const count = await Article.count();
+    const articles = await Article.findAll({
       include: [{ model: User, attributes: ["userName"] }],
       attributes: ["body", "createdAt", "id", "title", "updatedAt"],
+      limit,
+      offset,
+      order: [["createdAt", "DESC"]],
     });
-    return res.status(200).send(result);
+    return res.status(200).send({ articles, count });
   } catch (err) {
     return res.status(404).send({ message: err });
   }
@@ -132,13 +137,22 @@ const getAllArticles = async (req, res) => {
 
 const getAllArticlesByUserId = async (req, res) => {
   const { userId } = req.params;
+  const { limit, offset } = req.query;
   try {
-    const result = await Article.findAll({
+    const count = await Article.count({
       where: {
         userId,
       },
     });
-    return res.status(200).send(result);
+    const articles = await Article.findAll({
+      where: {
+        userId,
+      },
+      limit,
+      offset,
+      order: [["createdAt", "DESC"]],
+    });
+    return res.status(200).send({ articles, count });
   } catch (err) {
     return res.status(404).send({ message: err });
   }

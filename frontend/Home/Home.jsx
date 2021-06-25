@@ -1,34 +1,32 @@
 import React, { useEffect, useState } from "react";
 import service from "@/service/service";
+import ArticleList from "@/frontend/common/ArticleList";
 
 const Home = () => {
-  const [articles, setArticles] = useState([]);
+  const [articlesData, setArticlesData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 3;
+
   useEffect(async () => {
     try {
-      const res = await service.getAllArticles();
-      setArticles(res.data);
+      const offset = (currentPage - 1) * limit;
+      const res = await service.getArticlesForPage(limit, offset);
+      setArticlesData(res.data);
     } catch (err) {
       console.error(err);
     }
-  }, []);
+  }, [currentPage]);
 
   return (
     <div>
       Home
-      <div>
-        {articles.map((article, index) => {
-          return (
-            <div key={index}>
-              <div>User name:{article.user.userName}</div>
-              <div>Article id:{article.id}</div>
-              <div>Title: {article.title}</div>
-              <div>Body: {article.body}</div>
-              <div>Created at: {article.createdAt}</div>
-              <div>Updated at: {article.updatedAt}</div>
-            </div>
-          );
-        })}
-      </div>
+      <ArticleList
+        articlesData={articlesData}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        limit={limit}
+        page={"home"}
+      />
     </div>
   );
 };
