@@ -10,6 +10,27 @@ const authHeader = () => {
   }
 };
 
+const getPageSet = (currentPage, totalPage) => {
+  // Array of all page number
+  let arr = [];
+  for (let i = 1; i < totalPage + 1; i++) {
+    arr.push(i);
+  }
+  // Page number for page button
+  const result = [];
+  result.push(arr[0]);
+  if (currentPage - 4 > 0) result.push("...");
+  if (currentPage - 3 > 0) result.push(arr[currentPage - 3]);
+  if (currentPage - 2 > 0) result.push(arr[currentPage - 2]);
+  if (currentPage - 1 !== 0 && currentPage !== arr.length)
+    result.push(arr[currentPage - 1]);
+  if (currentPage + 1 < arr.length) result.push(arr[currentPage]);
+  if (currentPage + 2 < arr.length) result.push(arr[currentPage + 1]);
+  if (currentPage + 3 < arr.length) result.push("...");
+  if (arr[0] !== arr[arr.length - 1]) result.push(arr[arr.length - 1]);
+  return result;
+};
+
 const deleteArticlesId = (id) => {
   return axios.delete(`/api/articles/${id}`, { headers: authHeader() });
 };
@@ -18,12 +39,15 @@ const getAllArticleByArticleId = (id) => {
   return axios.get(`/api/articles/${id}`, { headers: authHeader() });
 };
 
-const getAllArticles = () => {
-  return axios.get("/api/articles");
+const getArticlesForPage = async (limit, offset) => {
+  return axios.get(`/api/articles?limit=${limit}&offset=${offset}`);
 };
 
-const getAllArticlesByUserId = (userId) => {
-  return axios.get(`/api/users/${userId}/articles`, { headers: authHeader() });
+const getArticlesForPageByUserId = async (userId, limit, offset) => {
+  return axios.get(
+    `/api/users/${userId}/articles?limit=${limit}&offset=${offset}`,
+    { headers: authHeader() }
+  );
 };
 
 const logout = () => {
@@ -94,8 +118,9 @@ const signIn = async (userName, password) => {
 export default {
   deleteArticlesId,
   getAllArticleByArticleId,
-  getAllArticles,
-  getAllArticlesByUserId,
+  getArticlesForPage,
+  getArticlesForPageByUserId,
+  getPageSet,
   logout,
   postArticle,
   putArticle,

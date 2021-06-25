@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, Redirect, Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import service from "@/service/service";
+import ArticleList from "@/frontend/common/ArticleList";
 
 const MyPage = (props) => {
   const { isLoggedIn, setIsLoggedIn } = props;
-  const [articles, setArticles] = useState([]);
   const userId = localStorage.getItem("userId");
   const refreshToken = localStorage.getItem("refreshToken");
   const accessToken = localStorage.getItem("accessToken");
+  const [articlesData, setArticlesData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 3;
 
   const tryAgain = async (func, arg) => {
     try {
@@ -20,8 +23,9 @@ const MyPage = (props) => {
   };
 
   const getArticles = async (res) => {
-    res = await service.getAllArticlesByUserId(userId);
-    setArticles(res.data);
+    const offset = (currentPage - 1) * limit;
+    res = await service.getArticlesForPageByUserId(userId, limit, offset);
+    setArticlesData(res.data);
     return res;
   };
 
@@ -34,7 +38,7 @@ const MyPage = (props) => {
     }
     if (res) return;
     tryAgain(getArticles, res);
-  }, []);
+  }, [currentPage]);
 
   const deleteArticle = async (id) => {
     let deleteRes;
@@ -50,21 +54,14 @@ const MyPage = (props) => {
   return (
     <div>
       My Page
-      {articles.map((article, index) => {
-        return (
-          <div key={index}>
-            <div>Article id:{article.id}</div>
-            <div>Title: {article.title}</div>
-            <div>Body: {article.body}</div>
-            <div>Created at: {article.createdAt}</div>
-            <div>Updated at: {article.updatedAt}</div>
-            <button onClick={() => deleteArticle(article.id)}>Delete</button>
-            <Link to={`/edit/${article.id}`}>
-              <div style={{ width: "100px" }}>Edit</div>
-            </Link>
-          </div>
-        );
-      })}
+      <ArticleList
+        articlesData={articlesData}
+        currentPage={currentPage}
+        deleteArticle={deleteArticle}
+        limit={limit}
+        setCurrentPage={setCurrentPage}
+        page={"myPage"}
+      />
       <Route>{!isLoggedIn && <Redirect to="/" />}</Route>
     </div>
   );
