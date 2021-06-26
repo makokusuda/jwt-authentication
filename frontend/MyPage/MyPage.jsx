@@ -4,7 +4,7 @@ import service from "@/service/service";
 import ArticleList from "@/frontend/common/ArticleList";
 
 const MyPage = (props) => {
-  const { isLoggedIn, setIsLoggedIn } = props;
+  const { isLoggedIn, setIsLoggedIn, setMode } = props;
   const userId = localStorage.getItem("userId");
   const refreshToken = localStorage.getItem("refreshToken");
   const accessToken = localStorage.getItem("accessToken");
@@ -12,6 +12,10 @@ const MyPage = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [updated, setUpdated] = useState(0);
   const limit = 3;
+
+  useEffect(() => {
+    setMode("myPage");
+  }, []);
 
   const tryAgain = async (func, arg) => {
     try {

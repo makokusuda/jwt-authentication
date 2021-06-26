@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import service from "@/service/service";
 
 const Login = (props) => {
-  const { isLoggedIn, setIsLoggedIn } = props;
+  const { isLoggedIn, setIsLoggedIn, setMode } = props;
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    setMode("login");
+  }, []);
 
   const signIn = async () => {
     let res;

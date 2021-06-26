@@ -12,14 +12,21 @@ import "@/frontend/style.css";
 const App = () => {
   const userId = localStorage.getItem("userId");
   const [isLoggedIn, setIsLoggedIn] = useState(userId ? true : false);
+  const [mode, setMode] = useState("home"); // home, about, login, myPage, post
 
   return (
     <>
       <Router>
-        <Menu isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        <Menu
+          isLoggedIn={isLoggedIn}
+          mode={mode}
+          setIsLoggedIn={setIsLoggedIn}
+        />
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
+          <Route
+            path="/about"
+            render={(props) => <About {...props} setMode={setMode} />}
+          />
           <Route
             path="/edit/:id"
             render={(props) => (
@@ -36,6 +43,7 @@ const App = () => {
               <Login
                 {...props}
                 isLoggedIn={isLoggedIn}
+                setMode={setMode}
                 setIsLoggedIn={setIsLoggedIn}
               />
             )}
@@ -46,6 +54,7 @@ const App = () => {
               <MyPage
                 {...props}
                 isLoggedIn={isLoggedIn}
+                setMode={setMode}
                 setIsLoggedIn={setIsLoggedIn}
               />
             )}
@@ -56,9 +65,14 @@ const App = () => {
               <Post
                 {...props}
                 isLoggedIn={isLoggedIn}
+                setMode={setMode}
                 setIsLoggedIn={setIsLoggedIn}
               />
             )}
+          />
+          <Route
+            path="/"
+            render={(props) => <Home {...props} setMode={setMode} />}
           />
         </Switch>
       </Router>
