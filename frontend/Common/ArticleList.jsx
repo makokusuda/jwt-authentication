@@ -20,6 +20,7 @@ const ArticleList = (props) => {
     const arr = service.getPageSet(currentPage, page);
     setArticles(articlesData.articles);
     setPageSet(arr);
+    if (currentPage > page) setCurrentPage(page);
   }, [articlesData]);
 
   return (

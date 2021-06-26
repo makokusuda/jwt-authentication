@@ -26,14 +26,12 @@ const Post = (props) => {
     }
     // update access token
     try {
-      console.log("Refresh token");
       const res = await service.refreshToken({ refreshToken, accessToken });
       await service.postArticle({ title, body, userId });
       window.setTimeout(() => {
         window.location.href = "http://localhost:8080/#/my-page";
       }, 1000);
     } catch (err) {
-      console.log("Logout");
       service.logout();
       setIsLoggedIn(false);
     }

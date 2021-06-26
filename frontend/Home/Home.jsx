@@ -20,6 +20,7 @@ const Home = () => {
   return (
     <div>
       Home
+      {articlesData.count === 0 && <div>No record</div>}
       <ArticleList
         articlesData={articlesData}
         currentPage={currentPage}

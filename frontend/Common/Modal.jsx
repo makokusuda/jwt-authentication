@@ -27,7 +27,6 @@ const Modal = (props) => {
   };
   return (
     <BackGround style={{ display: modal ? "block" : "none" }}>
-      {id}
       <Content>
         <div>
           <div>Delete</div>

@@ -68,6 +68,7 @@ const MyPage = (props) => {
   return (
     <div>
       My Page
+      {articlesData.count === 0 && <div>No record</div>}
       <ArticleList
         articlesData={articlesData}
         currentPage={currentPage}
