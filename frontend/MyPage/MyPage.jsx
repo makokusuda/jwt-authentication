@@ -10,6 +10,7 @@ const MyPage = (props) => {
   const accessToken = localStorage.getItem("accessToken");
   const [articlesData, setArticlesData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [updated, setUpdated] = useState(0);
   const limit = 3;
 
   const tryAgain = async (func, arg) => {
@@ -38,17 +39,30 @@ const MyPage = (props) => {
     }
     if (res) return;
     tryAgain(getArticles, res);
-  }, [currentPage]);
+  }, [currentPage, updated]);
+
+  const deleteFunc = async (id) => {
+    const res = await service.deleteArticlesId(id);
+    setUpdated(updated + 1);
+    return res;
+  };
 
   const deleteArticle = async (id) => {
     let deleteRes;
     try {
-      deleteRes = await service.deleteArticlesId(id);
+      deleteRes = await deleteFunc(id);
     } catch (err) {
       console.error(err);
     }
     if (deleteRes) return;
-    tryAgain(service.deleteArticlesId, id);
+
+    try {
+      await service.refreshToken({ refreshToken, accessToken });
+      await deleteFunc(id);
+    } catch (err) {
+      service.logout();
+      setIsLoggedIn(false);
+    }
   };
 
   return (

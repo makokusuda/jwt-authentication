@@ -7,6 +7,7 @@ import Login from "@/frontend/login/Login";
 import Menu from "@/frontend/common/Menu";
 import MyPage from "@/frontend/myPage/MyPage";
 import Post from "@/frontend/post/post";
+import "@/frontend/style.css";
 
 const App = () => {
   const userId = localStorage.getItem("userId");
