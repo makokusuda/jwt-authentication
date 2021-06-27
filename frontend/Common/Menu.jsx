@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import service from "@/service/service";
 
 const Menu = (props) => {
-  const { isLoggedIn, setIsLoggedIn } = props;
+  const { isLoggedIn, mode, setIsLoggedIn } = props;
 
   const logout = () => {
     service.logout();
@@ -12,19 +12,23 @@ const Menu = (props) => {
 
   return (
     <div>
-      <Link to="/">Home</Link>
+      {mode === "home" ? <div>Home</div> : <Link to="/">Home</Link>}
       {isLoggedIn ? (
         <>
-          <Link to="/my-page">My page</Link>
-          <Link to="/post">Post</Link>
+          {mode === "myPage" ? (
+            <div>My page</div>
+          ) : (
+            <Link to="/my-page">My page</Link>
+          )}
+          {mode === "post" ? <div>Post</div> : <Link to="/post">Post</Link>}
           <div style={{ width: "100px" }} onClick={logout}>
             Logout
           </div>
         </>
       ) : (
         <>
-          <Link to="/about">About</Link>
-          <Link to="/login">Login</Link>
+          {mode === "about" ? <div>About</div> : <Link to="/about">About</Link>}
+          {mode === "login" ? <div>Login</div> : <Link to="/login">Login</Link>}
         </>
       )}
     </div>

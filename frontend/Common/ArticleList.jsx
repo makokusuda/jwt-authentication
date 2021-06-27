@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import service from "@/service/service";
+import Article from "@/frontend/common/Article";
 
 const ArticleList = (props) => {
   const {
@@ -8,8 +8,8 @@ const ArticleList = (props) => {
     currentPage,
     deleteArticle,
     limit,
-    page,
     setCurrentPage,
+    page,
   } = props;
   const [articles, setArticles] = useState();
   const [pageSet, setPageSet] = useState();
@@ -20,42 +20,21 @@ const ArticleList = (props) => {
     const arr = service.getPageSet(currentPage, page);
     setArticles(articlesData.articles);
     setPageSet(arr);
+    if (currentPage > page) setCurrentPage(page);
   }, [articlesData]);
 
   return (
     <div>
       <div>
-        {page === "home" &&
-          articles &&
+        {articles &&
           articles.map((article, index) => {
             return (
               <div key={index}>
-                <div>User name:{article.user.userName}</div>
-                <div>Article id:{article.id}</div>
-                <div>Title: {article.title}</div>
-                <div>Body: {article.body}</div>
-                <div>Created at: {article.createdAt}</div>
-                <div>Updated at: {article.updatedAt}</div>
-              </div>
-            );
-          })}
-        {page === "myPage" &&
-          articles &&
-          articles.map((article, index) => {
-            return (
-              <div key={index}>
-                <div>Article id:{article.id}</div>
-                <div>User id:{article.userId}</div>
-                <div>Title: {article.title}</div>
-                <div>Body: {article.body}</div>
-                <div>Created at: {article.createdAt}</div>
-                <div>Updated at: {article.updatedAt}</div>
-                <button onClick={() => deleteArticle(article.id)}>
-                  Delete
-                </button>
-                <Link to={`/edit/${article.id}`}>
-                  <div style={{ width: "100px" }}>Edit</div>
-                </Link>
+                <Article
+                  article={article}
+                  deleteArticle={deleteArticle}
+                  page={page}
+                />
               </div>
             );
           })}

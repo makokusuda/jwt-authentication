@@ -2,10 +2,15 @@ import React, { useEffect, useState } from "react";
 import service from "@/service/service";
 import ArticleList from "@/frontend/common/ArticleList";
 
-const Home = () => {
+const Home = (props) => {
+  const { setMode } = props;
   const [articlesData, setArticlesData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 3;
+
+  useEffect(() => {
+    setMode("home");
+  }, []);
 
   useEffect(async () => {
     try {
@@ -20,6 +25,7 @@ const Home = () => {
   return (
     <div>
       Home
+      {articlesData.count === 0 && <div>No record</div>}
       <ArticleList
         articlesData={articlesData}
         currentPage={currentPage}

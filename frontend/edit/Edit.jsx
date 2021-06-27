@@ -3,13 +3,17 @@ import { Redirect, Route, useParams } from "react-router-dom";
 import service from "@/service/service";
 
 const Edit = (props) => {
-  const { isLoggedIn, setIsLoggedIn } = props;
-  const { id } = useParams(); //
+  const { isLoggedIn, setIsLoggedIn, setMode } = props;
+  const { id } = useParams();
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const [article, setArticle] = useState();
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    setMode("edit");
+  }, []);
 
   const getArticle = async () => {
     const res = await service.getAllArticleByArticleId(id);

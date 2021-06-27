@@ -1,24 +1,32 @@
 import React, { useState } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import About from "@/frontend/common/About";
-import Edit from "@/frontend/edit/edit";
+import Edit from "@/frontend/edit/Edit";
 import Home from "@/frontend/home/Home";
 import Login from "@/frontend/login/Login";
 import Menu from "@/frontend/common/Menu";
 import MyPage from "@/frontend/myPage/MyPage";
-import Post from "@/frontend/post/post";
+import Post from "@/frontend/post/Post";
+import "@/frontend/style.css";
 
 const App = () => {
   const userId = localStorage.getItem("userId");
   const [isLoggedIn, setIsLoggedIn] = useState(userId ? true : false);
+  const [mode, setMode] = useState("home"); // home, about, login, myPage, post
 
   return (
     <>
       <Router>
-        <Menu isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        <Menu
+          isLoggedIn={isLoggedIn}
+          mode={mode}
+          setIsLoggedIn={setIsLoggedIn}
+        />
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
+          <Route
+            path="/about"
+            render={(props) => <About {...props} setMode={setMode} />}
+          />
           <Route
             path="/edit/:id"
             render={(props) => (
@@ -26,6 +34,7 @@ const App = () => {
                 {...props}
                 isLoggedIn={isLoggedIn}
                 setIsLoggedIn={setIsLoggedIn}
+                setMode={setMode}
               />
             )}
           />
@@ -35,6 +44,7 @@ const App = () => {
               <Login
                 {...props}
                 isLoggedIn={isLoggedIn}
+                setMode={setMode}
                 setIsLoggedIn={setIsLoggedIn}
               />
             )}
@@ -45,6 +55,7 @@ const App = () => {
               <MyPage
                 {...props}
                 isLoggedIn={isLoggedIn}
+                setMode={setMode}
                 setIsLoggedIn={setIsLoggedIn}
               />
             )}
@@ -55,9 +66,14 @@ const App = () => {
               <Post
                 {...props}
                 isLoggedIn={isLoggedIn}
+                setMode={setMode}
                 setIsLoggedIn={setIsLoggedIn}
               />
             )}
+          />
+          <Route
+            path="/"
+            render={(props) => <Home {...props} setMode={setMode} />}
           />
         </Switch>
       </Router>

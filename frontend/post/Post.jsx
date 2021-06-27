@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import service from "@/service/service";
 
 const Post = (props) => {
-  const { isLoggedIn, setIsLoggedIn } = props;
+  const { isLoggedIn, setIsLoggedIn, setMode } = props;
   const userId = localStorage.getItem("userId");
 
   const refreshToken = localStorage.getItem("refreshToken");
   const accessToken = localStorage.getItem("accessToken");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+
+  useEffect(() => {
+    setMode("post");
+  }, []);
 
   const postArticle = async () => {
     let postRes;
@@ -18,14 +22,20 @@ const Post = (props) => {
     } catch (err) {
       console.error(err);
     }
-    if (postRes) return;
+    if (postRes) {
+      window.setTimeout(() => {
+        window.location.href = "http://localhost:8080/#/my-page";
+      }, 1000);
+      return;
+    }
     // update access token
     try {
-      console.log("Refresh token");
       const res = await service.refreshToken({ refreshToken, accessToken });
       await service.postArticle({ title, body, userId });
+      window.setTimeout(() => {
+        window.location.href = "http://localhost:8080/#/my-page";
+      }, 1000);
     } catch (err) {
-      console.log("Logout");
       service.logout();
       setIsLoggedIn(false);
     }

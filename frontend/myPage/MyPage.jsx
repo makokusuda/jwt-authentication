@@ -4,13 +4,18 @@ import service from "@/service/service";
 import ArticleList from "@/frontend/common/ArticleList";
 
 const MyPage = (props) => {
-  const { isLoggedIn, setIsLoggedIn } = props;
+  const { isLoggedIn, setIsLoggedIn, setMode } = props;
   const userId = localStorage.getItem("userId");
   const refreshToken = localStorage.getItem("refreshToken");
   const accessToken = localStorage.getItem("accessToken");
   const [articlesData, setArticlesData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [updated, setUpdated] = useState(0);
   const limit = 3;
+
+  useEffect(() => {
+    setMode("myPage");
+  }, []);
 
   const tryAgain = async (func, arg) => {
     try {
@@ -38,22 +43,36 @@ const MyPage = (props) => {
     }
     if (res) return;
     tryAgain(getArticles, res);
-  }, [currentPage]);
+  }, [currentPage, updated]);
+
+  const deleteFunc = async (id) => {
+    const res = await service.deleteArticlesId(id);
+    setUpdated(updated + 1);
+    return res;
+  };
 
   const deleteArticle = async (id) => {
     let deleteRes;
     try {
-      deleteRes = await service.deleteArticlesId(id);
+      deleteRes = await deleteFunc(id);
     } catch (err) {
       console.error(err);
     }
     if (deleteRes) return;
-    tryAgain(service.deleteArticlesId, id);
+
+    try {
+      await service.refreshToken({ refreshToken, accessToken });
+      await deleteFunc(id);
+    } catch (err) {
+      service.logout();
+      setIsLoggedIn(false);
+    }
   };
 
   return (
     <div>
       My Page
+      {articlesData.count === 0 && <div>No record</div>}
       <ArticleList
         articlesData={articlesData}
         currentPage={currentPage}
