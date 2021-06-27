@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import About from "@/frontend/common/About";
-import Edit from "@/frontend/edit";
-import Home from "@/frontend/Home";
-import Login from "@/frontend/Login";
+import Edit from "@/frontend/edit/Edit";
+import Home from "@/frontend/home/Home";
+import Login from "@/frontend/login/Login";
 import Menu from "@/frontend/common/Menu";
-import MyPage from "@/frontend/MyPage";
-import Post from "@/frontend/post";
+import MyPage from "@/frontend/myPage/MyPage";
+import Post from "@/frontend/post/Post";
 import "@/frontend/style.css";
 
 const App = () => {
