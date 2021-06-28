@@ -10,6 +10,7 @@ const Edit = (props) => {
   const [article, setArticle] = useState();
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     setMode("edit");
@@ -52,6 +53,18 @@ const Edit = (props) => {
   };
 
   const updateArticle = async () => {
+    if (title === "" || body === "") {
+      setMessage("Title and body are mandatory!");
+      return;
+    }
+    if (title.length > 255 || body.length > 255) {
+      setMessage(
+        `Title(${title.length}) and body(${body.length}) should be less than 255 characters!`
+      );
+      return;
+    }
+    setMessage("");
+
     let result = false;
     try {
       await putArticle();
@@ -72,6 +85,7 @@ const Edit = (props) => {
   return (
     <div>
       Edit
+      <div>{message}</div>
       {article && (
         <div>
           <div>id{id}</div>

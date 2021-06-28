@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import service from "@/service/service";
 
 const Menu = (props) => {
@@ -11,28 +12,86 @@ const Menu = (props) => {
   };
 
   return (
-    <div>
-      {mode === "home" ? <div>Home</div> : <Link to="/">Home</Link>}
-      {isLoggedIn ? (
-        <>
-          {mode === "myPage" ? (
-            <div>My page</div>
+    <Wrapper>
+      <Container>
+        <LeftArea>
+          {mode === "home" ? (
+            <MenuText>Home</MenuText>
           ) : (
-            <Link to="/my-page">My page</Link>
+            <Link to="/">
+              <MenuText>Home</MenuText>
+            </Link>
           )}
-          {mode === "post" ? <div>Post</div> : <Link to="/post">Post</Link>}
-          <div style={{ width: "100px" }} onClick={logout}>
-            Logout
-          </div>
-        </>
-      ) : (
-        <>
-          {mode === "about" ? <div>About</div> : <Link to="/about">About</Link>}
-          {mode === "login" ? <div>Login</div> : <Link to="/login">Login</Link>}
-        </>
-      )}
-    </div>
+        </LeftArea>
+        <RightArea>
+          {isLoggedIn ? (
+            <>
+              {mode === "myPage" ? (
+                <MenuText>Dashboard</MenuText>
+              ) : (
+                <Link to="/my-page">
+                  <MenuText>Dashboard</MenuText>
+                </Link>
+              )}
+              {mode === "post" ? (
+                <MenuText>Create Post</MenuText>
+              ) : (
+                <Link to="/post">
+                  <MenuText>Create Post</MenuText>
+                </Link>
+              )}
+              <MenuText onClick={logout}>Logout</MenuText>
+            </>
+          ) : (
+            <>
+              {mode === "about" ? (
+                <MenuText>About</MenuText>
+              ) : (
+                <Link to="/about">
+                  <MenuText>About</MenuText>
+                </Link>
+              )}
+              {mode === "login" ? (
+                <MenuText>Log in</MenuText>
+              ) : (
+                <Link to="/login">
+                  <MenuText>Log in</MenuText>
+                </Link>
+              )}
+            </>
+          )}
+        </RightArea>
+      </Container>
+    </Wrapper>
   );
 };
 
 export default Menu;
+
+const Wrapper = styled.div`
+  padding: 0 20px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  height: 80px;
+  max-width: 1260px;
+`;
+
+const LeftArea = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const RightArea = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const MenuText = styled.div`
+  color: #111111;
+  padding: 0 10px;
+  cursor: pointer;
+`;

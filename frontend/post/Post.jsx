@@ -10,12 +10,25 @@ const Post = (props) => {
   const accessToken = localStorage.getItem("accessToken");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     setMode("post");
   }, []);
 
   const postArticle = async () => {
+    if (title === "" || body === "") {
+      setMessage("Title and body are mandatory!");
+      return;
+    }
+    if (title.length > 255 || body.length > 255) {
+      setMessage(
+        `Title(${title.length}) and body(${body.length}) should be less than 255 characters!`
+      );
+      return;
+    }
+    setMessage("");
+
     let postRes;
     try {
       postRes = await service.postArticle({ title, body, userId });
@@ -44,6 +57,7 @@ const Post = (props) => {
   return (
     <div>
       Post page
+      <div>{message}</div>
       <input type="text" onChange={(e) => setTitle(e.target.value)} />
       <input type="text" onChange={(e) => setBody(e.target.value)} />
       <button onClick={postArticle}>Submit</button>

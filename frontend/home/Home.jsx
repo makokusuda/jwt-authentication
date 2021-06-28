@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import service from "@/service/service";
+import styled from "styled-components";
 import ArticleList from "@/frontend/common/ArticleList";
 
 const Home = (props) => {
@@ -23,8 +24,7 @@ const Home = (props) => {
   }, [currentPage]);
 
   return (
-    <div>
-      Home
+    <Container>
       {articlesData.count === 0 && <div>No record</div>}
       <ArticleList
         articlesData={articlesData}
@@ -33,8 +33,12 @@ const Home = (props) => {
         limit={limit}
         page={"home"}
       />
-    </div>
+    </Container>
   );
 };
 
 export default Home;
+
+const Container = styled.div`
+  padding: 0 20px;
+`;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import service from "@/service/service";
 import Article from "@/frontend/common/Article";
 
@@ -23,36 +24,80 @@ const ArticleList = (props) => {
     if (currentPage > page) setCurrentPage(page);
   }, [articlesData]);
 
+  const updateCurrentPage = (num) => {
+    setCurrentPage(num);
+    window.scroll({
+      top: 0,
+    });
+  };
+
   return (
-    <div>
+    <Container>
       <div>
         {articles &&
           articles.map((article, index) => {
             return (
-              <div key={index}>
-                <Article
-                  article={article}
-                  deleteArticle={deleteArticle}
-                  page={page}
-                />
-              </div>
+              <Article
+                key={index}
+                article={article}
+                deleteArticle={deleteArticle}
+                page={page}
+              />
             );
           })}
       </div>
-      <div>
+      <PageNum>
         {pageSet &&
           pageSet.map((num, index) => {
             return num === "..." ? (
-              <div key={index}>{num}</div>
-            ) : (
-              <div key={index} onClick={() => setCurrentPage(num)}>
+              <Number data-dot={"true"} key={index}>
                 {num}
-              </div>
+              </Number>
+            ) : (
+              <Number
+                key={index}
+                data-num={currentPage === num}
+                onClick={() => updateCurrentPage(num)}
+              >
+                {num}
+              </Number>
             );
           })}
-      </div>
-    </div>
+      </PageNum>
+    </Container>
   );
 };
 
 export default ArticleList;
+
+const Container = styled.div`
+  max-width: 1260px;
+  margin: 0 auto;
+`;
+
+const PageNum = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const Number = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 4px;
+  padding: 5px;
+  border: solid 1px rgba(15, 15, 15, 0.1);
+  min-width: 20px;
+  cursor: pointer;
+
+  &[data-num="true"] {
+    color: #ffffff;
+    background-color: #111111;
+    font-weight: bold;
+  }
+
+  &[data-dot="true"] {
+    border: none;
+    cursor: auto;
+  }
+`;
