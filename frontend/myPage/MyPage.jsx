@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
+import styled from "styled-components";
 import service from "@/service/service";
 import ArticleList from "@/frontend/common/ArticleList";
 
@@ -70,8 +71,7 @@ const MyPage = (props) => {
   };
 
   return (
-    <div>
-      My Page
+    <Container>
       {articlesData.count === 0 && <div>No record</div>}
       <ArticleList
         articlesData={articlesData}
@@ -82,8 +82,12 @@ const MyPage = (props) => {
         page={"myPage"}
       />
       <Route>{!isLoggedIn && <Redirect to="/" />}</Route>
-    </div>
+    </Container>
   );
 };
 
 export default MyPage;
+
+const Container = styled.div`
+  padding: 0 20px;
+`;
