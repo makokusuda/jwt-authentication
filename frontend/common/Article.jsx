@@ -123,7 +123,6 @@ const ArticleInfo = styled.div`
 `;
 
 const EditButton = styled.div`
-  // color: #111111;
   color: #969696;
   padding: 0 10px;
   margin: 0 5px;
