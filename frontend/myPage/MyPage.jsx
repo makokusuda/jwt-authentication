@@ -18,16 +18,6 @@ const MyPage = (props) => {
     setMode("myPage");
   }, []);
 
-  const tryAgain = async (func, arg) => {
-    try {
-      await service.refreshToken({ refreshToken, accessToken });
-      await func(arg);
-    } catch (err) {
-      service.logout();
-      setIsLoggedIn(false);
-    }
-  };
-
   const getArticles = async (res) => {
     const offset = (currentPage - 1) * limit;
     res = await service.getArticlesForPageByUserId(userId, limit, offset);
@@ -43,7 +33,20 @@ const MyPage = (props) => {
       console.error(err);
     }
     if (res) return;
-    tryAgain(getArticles, res);
+
+    try {
+      await service.refreshToken({ refreshToken, accessToken });
+    } catch (err) {
+      service.logout();
+      setIsLoggedIn(false);
+      return;
+    }
+
+    try {
+      await getArticles(res);
+    } catch (err) {
+      console.log("No record");
+    }
   }, [currentPage, updated]);
 
   const deleteFunc = async (id) => {
