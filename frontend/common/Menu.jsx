@@ -34,10 +34,10 @@ const Menu = (props) => {
                 </Link>
               )}
               {mode === "post" ? (
-                <MenuText>Create Post</MenuText>
+                <MenuText>Post</MenuText>
               ) : (
                 <Link to="/post">
-                  <MenuText>Create Post</MenuText>
+                  <MenuText>Post</MenuText>
                 </Link>
               )}
               <MenuText onClick={logout}>Logout</MenuText>

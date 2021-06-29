@@ -86,8 +86,11 @@ export default Post;
 const Container = styled.div`
   padding: 0 20px;
   text-align: center;
-  width: 300px;
+  width: 500px;
   margin: 0 auto;
+  @media only screen and (max-width: 600px) {
+    width: 300px;
+  }
 `;
 
 const PageTitle = styled.div`
@@ -105,11 +108,14 @@ const AreaTitle = styled.div`
 `;
 
 const TextArea = styled.textarea`
-  width: 292px;
+  width: 500px;
   height: 200px;
   resize: none;
   &[data-type="title"] {
     height: 20px;
+  }
+  @media only screen and (max-width: 600px) {
+    width: 292px;
   }
 `;
 
