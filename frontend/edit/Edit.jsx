@@ -8,7 +8,6 @@ const Edit = (props) => {
   const { id } = useParams();
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-  const [article, setArticle] = useState();
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -19,7 +18,6 @@ const Edit = (props) => {
 
   const getArticle = async () => {
     const res = await service.getAllArticleByArticleId(id);
-    setArticle(res.data[0]);
     setTitle(res.data[0].title);
     setBody(res.data[0].body);
   };
