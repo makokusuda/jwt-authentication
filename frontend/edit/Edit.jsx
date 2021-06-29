@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Redirect, Route, useParams } from "react-router-dom";
+import styled from "styled-components";
 import service from "@/service/service";
 
 const Edit = (props) => {
@@ -7,7 +8,6 @@ const Edit = (props) => {
   const { id } = useParams();
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-  const [article, setArticle] = useState();
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -18,7 +18,6 @@ const Edit = (props) => {
 
   const getArticle = async () => {
     const res = await service.getAllArticleByArticleId(id);
-    setArticle(res.data[0]);
     setTitle(res.data[0].title);
     setBody(res.data[0].body);
   };
@@ -83,37 +82,75 @@ const Edit = (props) => {
   };
 
   return (
-    <div>
-      Edit
-      <div>{message}</div>
-      {article && (
-        <div>
-          <div>id{id}</div>
-          <div>Article id:{article.id}</div>
-          <div>
-            Title:
-            <input
-              onChange={(e) => setTitle(e.target.value)}
-              type="text"
-              value={title}
-            />
-          </div>
-          <div>
-            Body:
-            <input
-              onChange={(e) => setBody(e.target.value)}
-              type="text"
-              value={body}
-            />
-          </div>
-          <div>Created at: {article.createdAt}</div>
-          <div>Updated at: {article.updatedAt}</div>
-        </div>
-      )}
-      <button onClick={updateArticle}>Submit</button>
+    <Container>
+      <PageTitle>Edit Post</PageTitle>
+      <ErrorMessage>{message}</ErrorMessage>
+      <div>
+        <AreaTitle>Title</AreaTitle>
+        <TextArea
+          data-type={"title"}
+          onChange={(e) => setTitle(e.target.value)}
+          type="text"
+          value={title}
+        />
+      </div>
+      <div>
+        <AreaTitle>Description</AreaTitle>
+        <TextArea
+          data-type={"body"}
+          onChange={(e) => setBody(e.target.value)}
+          type="text"
+          value={body}
+        />
+      </div>
+      <SubmitButton onClick={updateArticle}>Submit</SubmitButton>
       <Route>{!isLoggedIn && <Redirect to="/" />}</Route>
-    </div>
+    </Container>
   );
 };
 
 export default Edit;
+
+const Container = styled.div`
+  padding: 0 20px;
+  text-align: center;
+  width: 500px;
+  margin: 0 auto;
+  @media only screen and (max-width: 600px) {
+    width: 300px;
+  }
+`;
+
+const PageTitle = styled.div`
+  font-size: 20px;
+`;
+
+const ErrorMessage = styled.div`
+  color: #ff0000;
+  text-align: left;
+`;
+
+const AreaTitle = styled.div`
+  margin-top: 10px;
+  text-align: left;
+`;
+
+const TextArea = styled.textarea`
+  width: 500px;
+  height: 200px;
+  resize: none;
+  &[data-type="title"] {
+    height: 20px;
+  }
+  @media only screen and (max-width: 600px) {
+    width: 292px;
+  }
+`;
+
+const SubmitButton = styled.div`
+  color: #ffffff;
+  background-color: #111111;
+  margin-top: 20px;
+  font-weight: bold;
+  cursor: pointer;
+`;

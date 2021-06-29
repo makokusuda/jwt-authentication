@@ -28,20 +28,20 @@ const Modal = (props) => {
   return (
     <BackGround style={{ display: modal ? "block" : "none" }}>
       <Content>
-        <div>
-          <div>Delete</div>
-          Are you sure you want to delete this story?
-        </div>
-        <div>
-          <button
+        <Text>Are you sure you want to delete this post?</Text>
+        <ButtonArea>
+          <ModalButton
+            data-button={"cancel"}
             onClick={() => {
               setModal(false);
             }}
           >
             Cancel
-          </button>
-          <button onClick={() => onClickDelete(id)}>Delete</button>
-        </div>
+          </ModalButton>
+          <ModalButton data-button={"delete"} onClick={() => onClickDelete(id)}>
+            Delete
+          </ModalButton>
+        </ButtonArea>
       </Content>
     </BackGround>
   );
@@ -67,4 +67,28 @@ const Content = styled.div`
   margin: calc((100vh - 68px) / 2 - 137px) auto 0;
   padding: 20px;
   border-radius: 4px;
+  max-width: 500px;
+  text-align: center;
+`;
+
+const Text = styled.div`
+  margin: 10px 0 20px 0;
+`;
+
+const ButtonArea = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const ModalButton = styled.div`
+  color: #969696;
+  padding: 0 10px;
+  margin: 0 50px;
+  cursor: pointer;
+  border: solid 1px rgba(15, 15, 15, 0.1);
+
+  &[data-button="delete"] {
+    color: #ff0000;
+    border: solid 1px rgba(255, 0, 0, 0.5);
+  }
 `;

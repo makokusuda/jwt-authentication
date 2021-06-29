@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
+import styled from "styled-components";
 import service from "@/service/service";
 
 const Post = (props) => {
@@ -55,15 +56,73 @@ const Post = (props) => {
   };
 
   return (
-    <div>
-      Post page
-      <div>{message}</div>
-      <input type="text" onChange={(e) => setTitle(e.target.value)} />
-      <input type="text" onChange={(e) => setBody(e.target.value)} />
-      <button onClick={postArticle}>Submit</button>
+    <Container>
+      <PageTitle>Create New Post</PageTitle>
+      <ErrorMessage>{message}</ErrorMessage>
+      <div>
+        <AreaTitle>Title</AreaTitle>
+        <TextArea
+          data-type={"title"}
+          onChange={(e) => setTitle(e.target.value)}
+          type="text"
+        />
+      </div>
+      <div>
+        <AreaTitle>Description</AreaTitle>
+        <TextArea
+          data-type={"body"}
+          onChange={(e) => setBody(e.target.value)}
+          type="text"
+        />
+      </div>
+      <SubmitButton onClick={postArticle}>Submit</SubmitButton>
       <Route>{!isLoggedIn && <Redirect to="/" />}</Route>
-    </div>
+    </Container>
   );
 };
 
 export default Post;
+
+const Container = styled.div`
+  padding: 0 20px;
+  text-align: center;
+  width: 500px;
+  margin: 0 auto;
+  @media only screen and (max-width: 600px) {
+    width: 300px;
+  }
+`;
+
+const PageTitle = styled.div`
+  font-size: 20px;
+`;
+
+const ErrorMessage = styled.div`
+  color: #ff0000;
+  text-align: left;
+`;
+
+const AreaTitle = styled.div`
+  margin-top: 10px;
+  text-align: left;
+`;
+
+const TextArea = styled.textarea`
+  width: 500px;
+  height: 200px;
+  resize: none;
+  &[data-type="title"] {
+    height: 20px;
+  }
+  @media only screen and (max-width: 600px) {
+    width: 292px;
+  }
+`;
+
+const SubmitButton = styled.div`
+  color: #ffffff;
+  background-color: #111111;
+  margin-top: 20px;
+  font-weight: bold;
+  cursor: pointer;
+`;
