@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Redirect, Route, useParams } from "react-router-dom";
+import styled from "styled-components";
 import service from "@/service/service";
 
 const Edit = (props) => {
@@ -83,37 +84,69 @@ const Edit = (props) => {
   };
 
   return (
-    <div>
-      Edit
-      <div>{message}</div>
-      {article && (
-        <div>
-          <div>id{id}</div>
-          <div>Article id:{article.id}</div>
-          <div>
-            Title:
-            <input
-              onChange={(e) => setTitle(e.target.value)}
-              type="text"
-              value={title}
-            />
-          </div>
-          <div>
-            Body:
-            <input
-              onChange={(e) => setBody(e.target.value)}
-              type="text"
-              value={body}
-            />
-          </div>
-          <div>Created at: {article.createdAt}</div>
-          <div>Updated at: {article.updatedAt}</div>
-        </div>
-      )}
-      <button onClick={updateArticle}>Submit</button>
+    <Container>
+      <PageTitle>Edit Post</PageTitle>
+      <ErrorMessage>{message}</ErrorMessage>
+      <div>
+        <AreaTitle>Title</AreaTitle>
+        <TextArea
+          data-type={"title"}
+          onChange={(e) => setTitle(e.target.value)}
+          type="text"
+          value={title}
+        />
+      </div>
+      <div>
+        <AreaTitle>Description</AreaTitle>
+        <TextArea
+          data-type={"body"}
+          onChange={(e) => setBody(e.target.value)}
+          type="text"
+          value={body}
+        />
+      </div>
+      <SubmitButton onClick={updateArticle}>Submit</SubmitButton>
       <Route>{!isLoggedIn && <Redirect to="/" />}</Route>
-    </div>
+    </Container>
   );
 };
 
 export default Edit;
+
+const Container = styled.div`
+  padding: 0 20px;
+  text-align: center;
+  width: 300px;
+  margin: 0 auto;
+`;
+
+const PageTitle = styled.div`
+  font-size: 20px;
+`;
+
+const ErrorMessage = styled.div`
+  color: #ff0000;
+  text-align: left;
+`;
+
+const AreaTitle = styled.div`
+  margin-top: 10px;
+  text-align: left;
+`;
+
+const TextArea = styled.textarea`
+  width: 292px;
+  height: 200px;
+  resize: none;
+  &[data-type="title"] {
+    height: 20px;
+  }
+`;
+
+const SubmitButton = styled.div`
+  color: #ffffff;
+  background-color: #111111;
+  margin-top: 20px;
+  font-weight: bold;
+  cursor: pointer;
+`;
