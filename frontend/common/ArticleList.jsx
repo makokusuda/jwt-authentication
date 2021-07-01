@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import service from "@/service/service";
-import Article from "@/frontend/common/Article";
+import service from "../../service/service";
+import Article from "./Article";
 
 const ArticleList = (props) => {
   const {

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import About from "@/frontend/common/About";
-import Edit from "@/frontend/edit/Edit";
-import Home from "@/frontend/home/Home";
-import Login from "@/frontend/login/Login";
-import Menu from "@/frontend/common/Menu";
-import MyPage from "@/frontend/myPage/MyPage";
-import Post from "@/frontend/post/Post";
-import "@/frontend/style.css";
+import About from "./common/About";
+import Edit from "./edit/Edit";
+import Home from "./home/Home";
+import Login from "./login/Login";
+import Menu from "./common/Menu";
+import MyPage from "./myPage/MyPage";
+import Post from "./post/Post";
+import "./style.css";
 
 const App = () => {
   const userId = localStorage.getItem("userId");
