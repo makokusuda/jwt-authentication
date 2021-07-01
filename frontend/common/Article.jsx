@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Modal from "./modal";
+import Modal from "./Modal";
 
 const Article = (props) => {
   const { article, deleteArticle, page } = props;
