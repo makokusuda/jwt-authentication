@@ -1,5 +1,10 @@
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:3000";
+
+if (process.env.NODE_ENV === "production") {
+  axios.defaults.baseURL = "https://hibi-app.herokuapp.com:3000";
+} else {
+  axios.defaults.baseURL = "http://localhost:3000";
+}
 
 const authHeader = () => {
   const accessToken = localStorage.getItem("accessToken");
