@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import service from "@/service/service";
+import service from "../../service/service";
 import styled from "styled-components";
-import ArticleList from "@/frontend/common/ArticleList";
+import ArticleList from "../common/ArticleList";
 
 const Home = (props) => {
   const { setMode } = props;

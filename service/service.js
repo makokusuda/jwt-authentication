@@ -1,7 +1,7 @@
 import axios from "axios";
 
 if (process.env.NODE_ENV === "production") {
-  axios.defaults.baseURL = "https://hibi-app.herokuapp.com:3000";
+  axios.defaults.baseURL = "https://hibi-app.herokuapp.com";
 } else {
   axios.defaults.baseURL = "http://localhost:3000";
 }

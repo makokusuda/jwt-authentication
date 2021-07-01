@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import styled from "styled-components";
-import service from "@/service/service";
+import service from "../../service/service";
 
 const Post = (props) => {
   const { isLoggedIn, setIsLoggedIn, setMode } = props;

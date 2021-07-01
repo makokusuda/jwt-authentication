@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import service from "@/service/service";
+import service from "../../service/service";
 
 const Menu = (props) => {
   const { isLoggedIn, mode, setIsLoggedIn } = props;

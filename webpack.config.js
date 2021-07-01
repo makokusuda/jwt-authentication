@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 
 module.exports = {
   entry: "./frontend/index.jsx",
@@ -13,8 +14,6 @@ module.exports = {
     modules: [path.join(__dirname, "frontend"), "node_modules"],
     alias: {
       react: path.join(__dirname, "node_modules", "react"),
-      "@/service": path.resolve(__dirname, "service"),
-      "@/frontend": path.resolve(__dirname, "frontend"),
     },
     extensions: [".jsx", ".js"],
   },
@@ -34,6 +33,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new CaseSensitivePathsPlugin(),
     new HtmlWebPackPlugin({
       template: "./frontend/index.html",
     }),
