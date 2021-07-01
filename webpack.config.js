@@ -13,8 +13,6 @@ module.exports = {
     modules: [path.join(__dirname, "frontend"), "node_modules"],
     alias: {
       react: path.join(__dirname, "node_modules", "react"),
-      "@/service": path.resolve(__dirname, "service"),
-      "@/frontend": path.resolve(__dirname, "frontend"),
     },
     extensions: [".jsx", ".js"],
   },
