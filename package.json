@@ -11,6 +11,7 @@
     "start": "node ./server/server.js",
     "serve": "pm2 start serve -- dist"
   },
+  "heroku-prebuild": "npm install --dev",
   "author": "",
   "license": "ISC",
   "engines": {
