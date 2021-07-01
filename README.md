@@ -52,13 +52,13 @@ npm run create
 6. Run server
 
 ```
-npm run server
+npm run dev:server
 ```
 
 7. Run app
 
 ```
-npm run start
+npm run dev:client
 ```
 
 8. Visit `http://localhost:8080/#/`
