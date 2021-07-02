@@ -38,7 +38,7 @@ const Post = (props) => {
     }
     if (postRes) {
       window.setTimeout(() => {
-        window.location.href = "http://localhost:8080/#/my-page";
+        window.location.href = "/#/my-page";
       }, 1000);
       return;
     }
@@ -47,7 +47,7 @@ const Post = (props) => {
       const res = await service.refreshToken({ refreshToken, accessToken });
       await service.postArticle({ title, body, userId });
       window.setTimeout(() => {
-        window.location.href = "http://localhost:8080/#/my-page";
+        window.location.href = "/#/my-page";
       }, 1000);
     } catch (err) {
       service.logout();
