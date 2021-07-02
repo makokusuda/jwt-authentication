@@ -47,7 +47,7 @@ const Edit = (props) => {
   const putArticle = async () => {
     await service.putArticle({ id, body, title });
     window.setTimeout(() => {
-      window.location.href = "http://localhost:8080/#/my-page";
+      window.location.href = "/#/my-page";
     }, 1000);
   };
 
